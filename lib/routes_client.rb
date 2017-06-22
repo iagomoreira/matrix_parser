@@ -15,10 +15,22 @@ class RoutesClient
       get_routes_from_source('sniffers')
     end
 
+    def push_route(source, start_node, end_node, start_time, end_time)
+      body_params = {
+        source: source,
+        start_node: start_node,
+        end_node: end_node,
+        start_time: start_time,
+        end_time: end_time
+      }
+
+      post '/routes', body: secure(body_params)
+    end
+
     private
 
     def get_routes_from_source(source)
-      response = get '/routes', secure(source: source)
+      response = get '/routes', query: secure({source: source})
       unzip response
     end
 
@@ -28,7 +40,6 @@ class RoutesClient
 
     def secure(params = {})
       secured_params = params.merge(passphrase: ENV.fetch('ROUTES_PASSPHRASE'))
-      {query: secured_params}
     end
   end
 end
