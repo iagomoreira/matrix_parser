@@ -1,8 +1,4 @@
-class SniffersParser
-  def self.call(entries)
-    new(entries).call
-  end
-
+class SniffersParser < BaseParser
   def initialize(entries)
     @entries = entries
     @parsed_routes = []
@@ -54,14 +50,8 @@ class SniffersParser
   end
 
   def parse_file(file_name, collection)
-    file = @entries.find{|e| e.name =~ /#{file_name}/ }.get_input_stream.read
-
-    CSV.parse(file, headers: true, col_sep: ", " ) do |row|
+    CSV.parse(read_file(file_name), headers: true, col_sep: ", " ) do |row|
       collection.push(row)
     end
-  end
-
-  def convert_time(time)
-    time.utc.iso8601
   end
 end

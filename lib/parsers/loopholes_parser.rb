@@ -1,8 +1,4 @@
-class LoopholesParser
-  def self.call(entries)
-    new(entries).call
-  end
-
+class LoopholesParser < BaseParser
   def initialize(entries)
     @entries = entries
     @node_pairs = []
@@ -43,7 +39,6 @@ class LoopholesParser
   end
 
   def parse_file(file_name)
-    file = @entries.find{|e| e.name =~ /#{file_name}/ }.get_input_stream.read
-    JSON.parse(file)[file_name]
+    JSON.parse(read_file(file_name))[file_name]
   end
 end
