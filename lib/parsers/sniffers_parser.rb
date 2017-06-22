@@ -35,8 +35,8 @@ class SniffersParser
         source: 'sniffers',
         start_node: node_time['start_node'],
         end_node: node_time['end_node'],
-        start_time: start_time,
-        end_time: end_time
+        start_time: convert_time(start_time),
+        end_time: convert_time(end_time)
       )
     end
   end
@@ -59,5 +59,9 @@ class SniffersParser
     CSV.parse(file, headers: true, col_sep: ", " ) do |row|
       collection.push(row)
     end
+  end
+
+  def convert_time(time)
+    time.utc.iso8601
   end
 end
